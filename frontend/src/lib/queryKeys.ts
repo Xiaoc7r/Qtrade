@@ -29,6 +29,7 @@ export const EXT_DATA_QUERY_PREFIXES = new Set([
 const screenerCachedPrefix = ['screener-cached'] as const
 
 export const QK = {
+  qtradeLive: ['qtrade', 'live'] as const,
   qtradeAnalysis: (config: unknown) => ['qtrade', 'analysis', config] as const,
   qtradePresets: ['qtrade', 'presets'] as const,
   qtradeGateways: ['qtrade', 'gateways'] as const,

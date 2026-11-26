@@ -115,6 +115,6 @@ def import_paper_account(body: PaperImport, request: Request):
 def gateways():
     return {"gateways": [
         {"id": "paper", "name": "TSP 模拟交易", "available": True, "message": "复用 T+1、撮合、费用、策略跟单与订单账本"},
-        {"id": "qmt", "name": "QMT / XtQuant", "available": False, "message": "首版未实现实盘适配；需要券商授权、SDK、连接与订单回报验收"},
+        {"id": "qmt", "name": "QMT / XtQuant", "available": False, "message": "官方 SDK 适配与自动监控已实现；请到券商与 AI 执行页配置并完成本机券商验收"},
         {"id": "xtp", "name": "XTP / VeighNa", "available": False, "message": "候选接入方向；尚未实现券商适配和真实报单"},
     ]}

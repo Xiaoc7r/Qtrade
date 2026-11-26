@@ -66,7 +66,7 @@ export function Qtrade() {
   return <div className="qt-workbench">
     <header className="qt-heading">
       <div><h1><Workflow size={25} />Qtrade 量化工作台</h1><p>从市场判断到模拟执行，让每一步都有依据。</p></div>
-      <span className="qt-status"><ShieldCheck size={15} />模拟交易模式</span>
+      <Link className="qt-status" to="/qtrade/live"><ShieldCheck size={15} />券商与 AI 自动执行 <ArrowRight size={14} /></Link>
     </header>
     <nav className="qt-flow" aria-label="量化操作流程">
       <a href="#qt-market">看市场</a><ArrowRight size={14} /><a href="#qt-research">多维研究</a><ArrowRight size={14} /><Link to="/backtest">策略回测</Link><ArrowRight size={14} /><a href="#qt-execution">模拟执行</a>

@@ -7,6 +7,8 @@ EXTENSION_API_VERSION = BACKEND_EXTENSION_API_VERSION
 
 
 def setup(registrar: BackendExtensionRegistrar) -> None:
+    from .live.routes import build_router
     from .routes import router
 
     registrar.include_router(router)
+    registrar.include_router(build_router())
