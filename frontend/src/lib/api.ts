@@ -4,7 +4,7 @@
 // Prod:同源(FastAPI 托管前端 dist)
 
 import { toast } from '@/components/Toast'
-import type { QtradeAnalysis, QtradeRequest, QtradePreset, QtradeGateway, QtradePaperImport } from './qtradeTypes'
+import type { QtradeAnalysis, QtradeRequest, QtradePreset, QtradeGateway, QtradePaperImport, LiveState, LivePolicy } from './qtradeTypes'
 import type { NavLayout } from './navLayout'
 import type { StockInfoBarLayout } from './stock-info-fields'
 import type { ChartIndicatorDefinition, ChartIndicatorLibrary, IndicatorEvaluation, IndicatorEvaluationRequest, IndicatorImportPreview, IndicatorLibraryResponse, IndicatorPackage } from './custom-chart-indicators'
@@ -2855,6 +2855,14 @@ export interface LabReport {
 
 // ===== API surface =====
 export const api = {
+  qtradeLiveState: () => request<LiveState>('/api/custom/qtrade/live/state'),
+  qtradeLiveResolve: (client_id: string, evidence: string, broker_checked: boolean) => request<LiveState>('/api/custom/qtrade/live/resolve-unknown', { method: 'POST', body: JSON.stringify({ client_id, evidence, broker_checked }) }),
+  qtradeLiveConfig: (policy: LivePolicy, revision: string) => request<LiveState>('/api/custom/qtrade/live/config', { method: 'PUT', body: JSON.stringify({ policy, revision }) }),
+  qtradeLiveAction: (action: 'connect' | 'scan' | 'pause' | 'reconcile') => request<LiveState>(`/api/custom/qtrade/live/${action}`, { method: 'POST', timeoutMs: 45_000 }),
+  qtradeLiveMonitor: (enabled: boolean) => request<LiveState>('/api/custom/qtrade/live/monitor', { method: 'POST', body: JSON.stringify({ enabled }) }),
+  qtradeLiveKill: (enabled: boolean) => request<LiveState>('/api/custom/qtrade/live/emergency-stop', { method: 'POST', body: JSON.stringify({ enabled }) }),
+  qtradeLiveArm: (revision: string, minutes: number) => request<LiveState>('/api/custom/qtrade/live/arm', { method: 'POST', body: JSON.stringify({ revision, minutes }), timeoutMs: 45_000 }),
+  qtradeLiveCancel: (id: string) => request<LiveState>(`/api/custom/qtrade/live/intents/${encodeURIComponent(id)}/cancel`, { method: 'POST' }),
   qtradeAnalyze: (body: QtradeRequest) => request<QtradeAnalysis>('/api/custom/qtrade/analyze', { method: 'POST', body: JSON.stringify(body), timeoutMs: COMPUTE_REQUEST_TIMEOUT_MS }),
   qtradePresets: () => request<{ presets: QtradePreset[] }>('/api/custom/qtrade/presets'),
   qtradeInstall: (preset: QtradePreset['id']) => request<{ strategy_id: string; created: boolean }>('/api/custom/qtrade/presets/install', { method: 'POST', body: JSON.stringify({ preset }) }),
