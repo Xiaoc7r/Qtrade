@@ -18,6 +18,20 @@
 
 浏览器使用隔离工作目录和示例额度，AI 关闭，没有调用收费模型，没有向券商提交订单。示例额度不代表用户的实盘资金配置。
 
+界面证据：原[研究工作台](screenshots/workbench.png)；新增执行页[桌面深色](screenshots/live-desktop.png)、[桌面浅色](screenshots/live-light.png)、[窄屏](screenshots/live-mobile.png)。
+
+复现检查（后端命令在 `backend/` 执行，设置 `PYTHONUTF8=1`）：
+
+```text
+uv run pytest tests/test_qtrade_live.py tests/test_qtrade_live_contracts.py -q
+uv run pytest tests/test_qtrade.py tests/test_qtrade_live.py tests/test_qtrade_live_contracts.py tests/test_paper_execution_extension.py tests/test_extensions.py tests/test_openapi_contract.py -q
+uv run ruff check app/custom/qtrade/live tests/test_qtrade_live.py tests/test_qtrade_live_contracts.py
+```
+
+前端在 `frontend/` 执行 `pnpm exec vitest run --maxWorkers=4 --minWorkers=1` 与 `pnpm build`；本机为绕过全局 pnpm 版本托管和安装自检，额外使用了 `--config.managePackageManagerVersions=false --config.verifyDepsBeforeRun=false`。CI 使用锁文件指定的 pnpm 9。
+
+GitHub Windows 作业已经实际验证新增 57 项执行契约以及原 180 项桌面/锁回归（3 项跳过）；最终提交的完整结果以 PR 检查为准。
+
 ## Windows 全量与扩大回归的限制
 
 扩大回归中的 `test_extension_packages.py` 有两个旧用例失败：Windows ZIP 路径规范化使 `a\\evil.py` 的拒绝断言不成立；当前系统缺少创建符号链接的权限（WinError 1314）。相关实现和测试相对 main 没有改动。
