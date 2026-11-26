@@ -131,3 +131,5 @@ jobs:
           tests/test_data_dir_upgrade.py tests/test_macos_data_dir.py
           tests/test_windows_installer_contract.py tests/test_docker_data_dir.py
           tests/test_enriched_generation.py -q
+      - name: Qtrade 执行器、风控与官方 SDK 适配契约
+        run: uv run pytest tests/test_qtrade_live.py tests/test_qtrade_live_contracts.py -q
